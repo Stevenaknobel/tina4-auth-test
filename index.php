@@ -12,6 +12,7 @@ $config = new \Tina4\Config(static function (\Tina4\Config $config){
   //Your own config initializations 
 });
 
-$config->setAuthentication(new AuthHelper()); // this is where you register the custom Auth class
+//$config->setAuthentication(new AuthHelper()); // this is where you register the custom Auth class
 
+\Tina4\Initialize();
 echo new \Tina4\Tina4Php($config);
