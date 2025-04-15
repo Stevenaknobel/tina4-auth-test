@@ -1,0 +1,38 @@
+<form id="usersForm" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html">
+    <div class="row">
+        {#
+                    <div class="form-group col-md-6">
+                <label for="userId">User Id</label>
+                <input class="form-control" type="text" id="userId"
+                       name="userId" placeholder="User Id"
+                       value="{{ data.userId }}">
+            </div>
+        #}
+                    <div class="form-group col-md-6">
+                <label for="companyId">Company Id</label>
+                <input class="form-control" type="text" id="companyId"
+                       name="companyId" placeholder="Company Id"
+                       value="{{ data.companyId }}">
+            </div>
+                    <div class="form-group col-md-6">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" id="username"
+                       name="username" placeholder="Username"
+                       value="{{ data.username }}">
+            </div>
+                    <div class="form-group col-md-6">
+                <label for="password">Password</label>
+                <input class="form-control" type="text" id="password"
+                       name="password" placeholder="Password"
+                       value="{{ data.password }}">
+            </div>
+                    <div class="form-group col-md-6">
+                <label for="createdAt">Created At</label>
+                <input class="form-control" type="text" id="createdAt"
+                       placeholder="Created At"
+                       disabled
+                       value="{{ data.createdAt }}">
+            </div>
+            </div>
+    {{"usersForm" | formToken | raw }}
+</form>
