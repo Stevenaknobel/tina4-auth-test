@@ -2,11 +2,11 @@
 
 /**
  * @description Landing page after login
- * @secure
  */
 
+\Tina4\Get::add("/landing-page", function (\Tina4\Response $response, \Tina4\Request $request ) {
 
-\Tina4\Get::add("/landing-page", function (\Tina4\Response $response) {
+    \Tina4\Debug::message("Landing page route hit!", TINA4_LOG_CRITICAL);
     // Check if user is logged in
     if (!isset($_SESSION["user_id"])) {
         return \Tina4\redirect("/login");  // Redirect to login if not logged in
