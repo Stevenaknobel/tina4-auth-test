@@ -1,5 +1,11 @@
-<form id="monitoredSitesForm" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html">
+<form id="monitoringHistoryForm" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html">
     <div class="row">
+                    <div class="form-group col-md-6">
+                <label for="historyId">History Id</label>
+                <input class="form-control" type="text" id="historyId"
+                       name="historyId" placeholder="History Id"
+                       value="{{ data.historyId }}">
+            </div>
                     <div class="form-group col-md-6">
                 <label for="siteId">Site Id</label>
                 <input class="form-control" type="text" id="siteId"
@@ -7,28 +13,10 @@
                        value="{{ data.siteId }}">
             </div>
                     <div class="form-group col-md-6">
-                <label for="companyId">Company Id</label>
-                <input class="form-control" type="text" id="companyId"
-                       name="companyId" placeholder="Company Id"
-                       value="{{ data.companyId }}">
-            </div>
-                    <div class="form-group col-md-6">
                 <label for="typeId">Type Id</label>
                 <input class="form-control" type="text" id="typeId"
                        name="typeId" placeholder="Type Id"
                        value="{{ data.typeId }}">
-            </div>
-                    <div class="form-group col-md-6">
-                <label for="url">Url</label>
-                <input class="form-control" type="text" id="url"
-                       name="url" placeholder="Url"
-                       value="{{ data.url }}">
-            </div>
-                    <div class="form-group col-md-6">
-                <label for="siteName">Site Name</label>
-                <input class="form-control" type="text" id="siteName"
-                       name="siteName" placeholder="Site Name"
-                       value="{{ data.siteName }}">
             </div>
                     <div class="form-group col-md-6">
                 <label for="status">Status</label>
@@ -43,5 +31,5 @@
                        value="{{ data.createdAt }}">
             </div>
             </div>
-    {{"monitoredSitesForm" | formToken | raw }}
+    {{"monitoringHistoryForm" | formToken | raw }}
 </form>

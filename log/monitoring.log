@@ -1,0 +1,473 @@
+PHP Warning:  require_once(../../vendor/autoload.php): Failed to open stream: No such file or directory in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 2
+PHP Fatal error:  Uncaught Error: Failed opening required '../../vendor/autoload.php' (include_path='.:/usr/share/php') in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php:2
+Stack trace:
+#0 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 2
+PHP Fatal error:  Uncaught TypeError: Tina4\DataMySQL::fetch(): Argument #2 ($noOfRecords) must be of type int, array given, called in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 67 and defined in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php:77
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(67): Tina4\DataMySQL->fetch()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(15): runScheduledMonitoring()
+#2 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php on line 77
+PHP Fatal error:  Uncaught TypeError: Tina4\DataMySQL::fetch(): Argument #2 ($noOfRecords) must be of type int, array given, called in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 67 and defined in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php:77
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(67): Tina4\DataMySQL->fetch()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(14): runScheduledMonitoring()
+#2 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php on line 77
+ping: : Name or service not known
+Monitoring done at 2025-04-22 15:25:20
+ping: : Name or service not known
+Monitoring done at 2025-04-22 15:30:22
+ping: : Name or service not known
+Monitoring done at 2025-04-22 15:35:26
+PHP Warning:  Undefined array key "type_id" in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 35
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(76): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Warning:  Undefined array key "type_id" in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 31
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Warning:  Undefined array key "type_id" in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 31
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Warning:  Undefined array key "type_id" in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 31
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Warning:  Undefined array key "type_id" in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 31
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Warning:  Undefined array key "type_id" in /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php on line 31
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+Monitoring complete at 2025-04-22 16:10:02
+Monitoring complete at 2025-04-22 16:15:01
+Monitoring complete at 2025-04-22 16:20:02
+Monitoring complete at 2025-04-22 16:25:02
+Monitoring complete at 2025-04-22 16:30:02
+Monitoring complete at 2025-04-22 16:35:02
+PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'test_db.monitored_sites' doesn't exist in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLQuery.php:32
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLQuery.php(32): mysqli_query()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(79): Tina4\MySQLQuery->query()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(27): Tina4\DataMySQL->fetch()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLQuery.php on line 32
+Monitoring complete at 2025-04-22 16:45:02
+Monitoring complete at 2025-04-22 16:50:01
+Monitoring complete at 2025-04-22 16:55:02
+Monitoring complete at 2025-04-22 17:00:02
+Monitoring complete at 2025-04-22 17:05:01
+Monitoring complete at 2025-04-23 08:05:02
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+PHP Fatal error:  Uncaught mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`test_db`.`monitoring`, CONSTRAINT `monitoring_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `monitoring_types` (`type_id`)) in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php:38
+Stack trace:
+#0 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php(38): mysqli_stmt_execute()
+#1 /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/DataMySQL.php(66): Tina4\MySQLExec->exec()
+#2 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(79): Tina4\DataMySQL->exec()
+#3 /mnt/c/Users/Steven/Desktop/Monitoring/src/scripts/run-monitoring.php(17): runScheduledMonitoring()
+#4 {main}
+  thrown in /mnt/c/Users/Steven/Desktop/Monitoring/vendor/tina4stack/tina4php-mysql/Tina4/MySQLExec.php on line 38
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 08:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 08:40:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 08:45:03
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 08:50:03
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 08:55:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:00:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:05:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:10:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:15:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:20:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:25:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:30:05
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:35:05
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:40:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:45:05
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:50:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 09:55:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:00:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:05:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:10:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:15:05
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:20:03
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:25:04
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:30:03
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:35:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:40:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:45:05
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:50:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 10:55:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:00:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:05:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:10:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:15:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:20:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:25:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:30:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:40:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 11:55:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:00:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:15:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:25:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:30:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:35:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:40:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:45:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 12:55:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:00:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:05:10
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:15:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:25:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:30:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:35:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:40:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:45:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 13:55:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:00:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:05:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:25:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:30:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:40:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 14:55:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:00:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:10:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:25:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:30:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:35:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:40:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 15:55:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:00:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:20:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:25:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:30:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:40:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 16:55:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:00:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:05:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:25:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:30:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:40:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 17:55:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:00:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:10:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:15:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:25:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:30:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:40:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:50:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 18:55:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:00:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:25:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:30:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:40:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-23 19:45:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:06:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:10:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:20:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:25:15
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:30:11
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:35:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:40:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:45:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:50:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 08:55:10
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:00:07
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:10:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:15:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:20:08
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:25:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:30:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:35:10
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:40:14
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:45:16
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:50:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 09:55:11
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:00:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:05:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:10:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:15:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:20:09
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:25:12
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:30:11
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:35:10
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:40:06
+ping: : Name or service not known
+Monitoring complete at 2025-04-25 10:45:07

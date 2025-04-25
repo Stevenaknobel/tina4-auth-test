@@ -1,5 +1,9 @@
 <?php
 
+
+// Set the time zone to South Africa Standard Time (UTC+2)
+date_default_timezone_set('Africa/Johannesburg');
+
 require_once "./vendor/autoload.php";
 require_once "./src/app/AuthHelper.php";
 

@@ -2,12 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
 </head>
 <body>
-<h1>Welcome {{ user.username }}!</h1>
-<p>You are logged in successfully. Enjoy your stay.</p>
+<h1>Welcome {{ username }}!</h1>
+
+<h2>Monitored Sites</h2>
+<table border="1" cellpadding="10">
+    <thead>
+    <tr>
+        <th>Site Name</th>
+        <th>URL</th>
+        <th>Last Status</th>
+        <th>Check Type</th>
+        <th>Last Checked</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in sites %}
+        <tr>
+            <td>{{ item.siteName }}</td>
+            <td>{{ item.url }}</td>
+            <td>
+                {% if item.status == "up" %}
+                    <span style="color: green;">✔ {{ item.status }}</span>
+                {% elseif item.status == "down" %}
+                    <span style="color: red;">✖ {{ item.status }}</span>
+                {% else %}
+                    <span style="color: gray;">{{ item.status }}</span>
+                {% endif %}
+            </td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.checkedAt|date("Y-m-d H:i") }}</td>
+            <td>
+                <form method="post" action="/check-site">
+                    <input type="hidden" name="site_id" value="{{ item.siteId }}">
+                    <input type="hidden" name="type_id" value="{{ item.typeId }}">
+                    <button type="submit">Check Now</button>
+                    {{ "check-site" | formToken | raw }}
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    <p><a href="/create-site">+ Add New Monitored Site</a></p>
+    </tbody>
+</table>
+
+<br>
 <a href="/logout">Logout</a>
 </body>
 </html>

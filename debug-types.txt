@@ -1,0 +1,27 @@
+Array
+(
+    [0] => Array
+        (
+            [typeId] => 1
+            [typeName] => ping
+            [type_id] => 1
+            [type_name] => ping
+        )
+
+    [1] => Array
+        (
+            [typeId] => 2
+            [typeName] => GET
+            [type_id] => 2
+            [type_name] => GET
+        )
+
+    [2] => Array
+        (
+            [typeId] => 3
+            [typeName] => POST
+            [type_id] => 3
+            [type_name] => POST
+        )
+
+)
