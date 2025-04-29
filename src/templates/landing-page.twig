@@ -3,53 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <title>Landing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .status-up {
+            color: green;
+        }
+
+        .status-down {
+            color: red;
+        }
+
+        .status-pending {
+            color: gray;
+        }
+
+        .summary {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .summary span {
+            margin-right: 15px;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .search-bar {
+            margin-bottom: 15px;
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .sortable {
+            cursor: pointer;
+        }
+
+        .sort-arrow {
+            font-size: 10px;
+            margin-left: 5px;
+        }
+    </style>
 </head>
 <body>
 <h1>Welcome {{ username }}!</h1>
 
+<div class="summary">
+    <strong>Services:</strong>
+    <span class="status-up">🟢 {{ upCount }} Up</span>
+    <span class="status-down">🔴 {{ downCount }} Down</span>
+    <span class="status-pending">⚪ {{ pendingCount }} Pending</span>
+</div>
+
 <h2>Monitored Sites</h2>
-<table border="1" cellpadding="10">
+
+<!-- Search bar -->
+<input type="text" id="searchBar" class="search-bar" placeholder="Search by site name, URL, or status..." />
+
+<table>
     <thead>
     <tr>
-        <th>Site Name</th>
-        <th>URL</th>
-        <th>Last Status</th>
-        <th>Check Type</th>
-        <th>Last Checked</th>
+        <th class="sortable" id="siteNameHeader">
+            Site Name
+            <span class="sort-arrow" id="siteNameArrow">↓</span>
+        </th>
+        <th class="sortable" id="urlHeader">
+            URL
+            <span class="sort-arrow" id="urlArrow">↓</span>
+        </th>
+        <th class="sortable" id="statusHeader">
+            Last Status
+            <span class="sort-arrow" id="statusArrow">↓</span>
+        </th>
+        <th class="sortable" id="checkTypeHeader">
+            Check Type
+            <span class="sort-arrow" id="checkTypeArrow">↓</span>
+        </th>
+        <th class="sortable" id="dateHeader">
+            Last Checked
+            <span class="sort-arrow" id="dateArrow">↓</span>
+        </th>
         <th>Actions</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="siteTableBody">
     {% for item in sites %}
         <tr>
             <td>{{ item.siteName }}</td>
             <td>{{ item.url }}</td>
             <td>
                 {% if item.status == "up" %}
-                    <span style="color: green;">✔ {{ item.status }}</span>
+                    <span class="status-up">🟢 {{ item.status }}</span>
                 {% elseif item.status == "down" %}
-                    <span style="color: red;">✖ {{ item.status }}</span>
+                    <span class="status-down">🔴 {{ item.status }}</span>
                 {% else %}
-                    <span style="color: gray;">{{ item.status }}</span>
+                    <span class="status-pending">⚪ {{ item.status }}</span>
                 {% endif %}
             </td>
             <td>{{ item.type }}</td>
-            <td>{{ item.checkedAt|date("Y-m-d H:i") }}</td>
+            <td>{{ item.checkedAt | date("Y-m-d H:i") }}</td>
             <td>
                 <form method="post" action="/check-site">
                     <input type="hidden" name="site_id" value="{{ item.siteId }}">
                     <input type="hidden" name="type_id" value="{{ item.typeId }}">
-                    <button type="submit">Check Now</button>
+                    <button class="btn" type="submit">Check Now</button>
                     {{ "check-site" | formToken | raw }}
                 </form>
             </td>
         </tr>
     {% endfor %}
-    <p><a href="/create-site">+ Add New Monitored Site</a></p>
     </tbody>
 </table>
 
+<p style="margin-top: 15px;">
+    <a href="/create-site">+ Add New Monitored Site</a>
+</p>
+
 <br>
 <a href="/logout">Logout</a>
+
+<!-- Add the JavaScript link -->
+<script src="/src/public/js/filters.js"></script>
 </body>
 </html>

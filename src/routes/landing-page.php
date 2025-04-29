@@ -53,10 +53,31 @@
         ];
     }
 
+    // Count how many are up/down/pending
+    $upCount = 0;
+    $downCount = 0;
+    $pendingCount = 0;
+
+    foreach ($sitesWithMonitoring as $site) {
+        switch (strtolower($site["status"])) {
+            case "up":
+                $upCount++;
+                break;
+            case "down":
+                $downCount++;
+                break;
+            default:
+                $pendingCount++;
+        }
+    }
+
   \Tina4\Debug::message("Sites with monitoring data: " . json_encode($sitesWithMonitoring));
     return $response(\Tina4\renderTemplate("landing-page.twig", [
         "username" => $_SESSION["username"],
-        "sites" => $sitesWithMonitoring
+        "sites" => $sitesWithMonitoring,
+        "upCount" => $upCount,
+        "downCount" => $downCount,
+        "pendingCount" => $pendingCount
     ]));
 });
 
