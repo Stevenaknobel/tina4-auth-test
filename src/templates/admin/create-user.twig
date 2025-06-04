@@ -1,0 +1,82 @@
+{% include 'common/header.twig' with {
+    'pageTitle': 'Create User - Admin Panel',
+    'activePage': 'admin',
+    'customStyles': '
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+    '
+} %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Create New User</h4>
+                </div>
+                <div class="card-body">
+                    {% if request.error %}
+                        <div class="alert alert-danger">{{ request.error }}</div>
+                    {% endif %}
+
+                    <form method="post" action="/admin/users/create">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required autofocus>
+                            <small class="form-text text-muted">Enter a unique username for the new user.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <small class="form-text text-muted">Enter the user's email address.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <small class="form-text text-muted">Enter a strong password for the new user.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company_id">Company:</label>
+                            <select class="form-control" id="company_id" name="company_id" required>
+                                <option value="">Select a company</option>
+                                {% for company in companies %}
+                                    <option value="{{ company.companyId }}" {% if selectedCompanyId and company.companyId == selectedCompanyId %}selected{% endif %}>{{ company.companyName }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="form-text text-muted">Select the company this user belongs to.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Role:</label>
+                            <select class="form-control" id="role" name="role">
+                                <option value="user">Regular User</option>
+                                <option value="company_admin">Company Admin</option>
+                                <option value="global_admin">Global Admin</option>
+                            </select>
+                            <small class="form-text text-muted">Select the role for the new user.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Create User</button>
+                            <a href="/admin/users" class="btn btn-secondary">Cancel</a>
+                        </div>
+
+                        {{ "create-user" | formToken | raw }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'common/footer.twig' %}

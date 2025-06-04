@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+        .table th {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Company Admin Dashboard</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5>Welcome, {{ username }}!</h5>
+                        <p>This is the company administration dashboard where you can manage users for {{ company.company_name }}.</p>
+
+                        {% if request.success %}
+                            <div class="alert alert-success">{{ request.success }}</div>
+                        {% endif %}
+
+                        {% if request.error %}
+                            <div class="alert alert-danger">{{ request.error }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Users</h5>
+                        <a href="/company-admin/users/add" class="btn btn-sm btn-light">+ Add User</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Created At</th>
+                                    <th>2FA Enabled</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.user_id }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.role }}</td>
+                                        <td>{{ user.created_at }}</td>
+                                        <td>{{ user.twofa_enabled ? 'Yes' : 'No' }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="/company-admin/users/edit/{{ user.user_id }}" class="btn btn-sm btn-primary">Edit</a>
+                                                <a href="/company-admin/users/delete/{{ user.user_id }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">No users found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Quick Links</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="/landing-page" class="btn btn-block btn-outline-primary mb-2">Go to Dashboard</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/monitoredsites/landing" class="btn btn-block btn-outline-primary mb-2">Manage Monitored Sites</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/company-admin/branding" class="btn btn-block btn-outline-primary mb-2">Company Branding</a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/logout" class="btn btn-block btn-outline-secondary mb-2">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-5 mb-3 text-center text-muted">
+            <p>Monitoring System Company Admin Panel &copy; {{ "now"|date("Y") }}</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,26 +1,73 @@
-<form id="companiesForm" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html">
-    <div class="row">
-    {#
-                    <div class="form-group col-md-6">
-                <label for="companyId">Company Id</label>
-                <input class="form-control" type="text" id="companyId"
-                       name="companyId" placeholder="Company Id"
-                       value="{{ data.companyId }}">
+{% include 'common/header.twig' with {
+    'pageTitle': data.companyId ? 'Edit Company' : 'Create Company',
+    'activePage': 'admin'
+} %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{ data.companyId ? 'Edit Company' : 'Create Company' }}</h4>
             </div>
-            #}
-                    <div class="form-group col-md-6">
-                <label for="companyName">Company Name</label>
-                <input class="form-control" type="text" id="companyName"
-                       name="companyName" placeholder="Company Name"
-                       value="{{ data.companyName }}">
+            <div class="card-body">
+                <form id="companiesForm" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html">
+                    <div class="row">
+                    {#
+                                    <div class="form-group col-md-6">
+                                <label for="companyId">Company Id</label>
+                                <input class="form-control" type="text" id="companyId"
+                                       name="companyId" placeholder="Company Id"
+                                       value="{{ data.companyId }}">
+                            </div>
+                            #}
+                                    <div class="form-group col-md-6">
+                                <label for="companyName">Company Name</label>
+                                <input class="form-control" type="text" id="companyName"
+                                       name="companyName" placeholder="Company Name"
+                                       value="{{ data.companyName }}" required>
+                            </div>
+                                    <div class="form-group col-md-6">
+                                <label for="createdAt">Created At</label>
+                                <input class="form-control" type="text" id="createdAt"
+                                       placeholder="Created At"
+                                       disabled
+                                       value="{{ data.createdAt }}">
+                            </div>
+                    </div>
+
+                    <h4 class="mt-3">Notification Settings</h4>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="notificationsEnabled" 
+                                       name="notificationsEnabled" value="1" 
+                                       {% if data.notificationsEnabled %}checked{% endif %}>
+                                <label class="custom-control-label" for="notificationsEnabled">Enable Notifications</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="slackWebhookUrl">Slack Webhook URL</label>
+                            <input class="form-control" type="text" id="slackWebhookUrl"
+                                   name="slackWebhookUrl" placeholder="https://hooks.slack.com/services/..."
+                                   value="{{ data.slackWebhookUrl }}">
+                            <small class="form-text text-muted">For Slack notifications when a site goes down</small>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="notificationEmail">Notification Email</label>
+                            <input class="form-control" type="email" id="notificationEmail"
+                                   name="notificationEmail" placeholder="alerts@example.com"
+                                   value="{{ data.notificationEmail }}">
+                            <small class="form-text text-muted">For email notifications when a site goes down</small>
+                        </div>
+                    </div>
+
+                    {{"companiesForm" | formToken | raw }}
+                </form>
             </div>
-                    <div class="form-group col-md-6">
-                <label for="createdAt">Created At</label>
-                <input class="form-control" type="text" id="createdAt"
-                       placeholder="Created At"
-                       disabled
-                       value="{{ data.createdAt }}">
-            </div>
-            </div>
-    {{"companiesForm" | formToken | raw }}
-</form>
+        </div>
+    </div>
+</div>
+
+{% include 'common/footer.twig' %}

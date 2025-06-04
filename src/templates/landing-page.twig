@@ -1,173 +1,296 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Landing Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-        }
+{% include 'common/header.twig' with {
+    'pageTitle': 'Monitoring Dashboard',
+    'activePage': 'dashboard',
+    'showUserDropdown': true,
+    'username': username
+} %}
+    <div class="dashboard-header">
+        <h1 class="display-4">Welcome, {{ username }}!</h1>
+        <p class="lead">Here's an overview of your monitored sites.</p>
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 10px;
-        }
+        {% if session.impersonating %}
+            <div class="alert alert-warning">
+                <i class="fas fa-user-secret mr-2"></i>
+                <strong>Admin Notice:</strong> You are currently viewing as {{ username }}.
+                <a href="/admin/return" class="btn btn-sm btn-outline-dark ml-2">
+                    <i class="fas fa-sign-out-alt mr-1"></i>Return to Admin
+                </a>
+            </div>
+        {% endif %}
 
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
+        {% if request.notice %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle mr-2"></i>{{ request.notice }}
+            </div>
+        {% endif %}
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+        {% if request.success %}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle mr-2"></i>{{ request.success }}
+            </div>
+        {% endif %}
+    </div>
 
-        tr:hover {
-            background-color: #f1f1f1;
-        }
+    <div class="row">
+        <div class="col-md-4">
+            <div class="stats-card stats-card-up">
+                <div class="stats-number">{{ upCount }}</div>
+                <div class="stats-label">SITES UP</div>
+                <i class="fas fa-check-circle fa-2x text-success mt-2"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card stats-card-down">
+                <div class="stats-number">{{ downCount }}</div>
+                <div class="stats-label">SITES DOWN</div>
+                <i class="fas fa-exclamation-circle fa-2x text-danger mt-2"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card stats-card-pending">
+                <div class="stats-number">{{ pendingCount }}</div>
+                <div class="stats-label">PENDING</div>
+                <i class="fas fa-clock fa-2x text-secondary mt-2"></i>
+            </div>
+        </div>
+    </div>
 
-        .status-up {
-            color: green;
-        }
+    <div class="table-container">
+        <h2 class="mb-4">Monitored Sites</h2>
 
-        .status-down {
-            color: red;
-        }
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input type="text" id="searchBar" class="form-control"
+                           placeholder="Search by site name or status...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                    </div>
+                    <select id="tagFilter" class="form-control">
+                        <option value="">All Tags</option>
+                        {% set allTags = [] %}
+                        {% for site in sites %}
+                            {% if site.tags %}
+                                {% set siteTags = site.tags|split(',') %}
+                                {% for tag in siteTags %}
+                                    {% set trimmedTag = tag|trim %}
+                                    {% if trimmedTag not in allTags %}
+                                        {% set allTags = allTags|merge([trimmedTag]) %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for tag in allTags|sort %}
+                            <option value="{{ tag }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
 
-        .status-pending {
-            color: gray;
-        }
-
-        .summary {
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        .summary span {
-            margin-right: 15px;
-        }
-
-        .btn {
-            background-color: #007BFF;
-            color: white;
-            padding: 6px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .search-bar {
-            margin-bottom: 15px;
-            padding: 8px;
-            width: 300px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .sortable {
-            cursor: pointer;
-        }
-
-        .sort-arrow {
-            font-size: 10px;
-            margin-left: 5px;
-        }
-    </style>
-</head>
-<body>
-<h1>Welcome {{ username }}!</h1>
-
-<div class="summary">
-    <strong>Services:</strong>
-    <span class="status-up">🟢 {{ upCount }} Up</span>
-    <span class="status-down">🔴 {{ downCount }} Down</span>
-    <span class="status-pending">⚪ {{ pendingCount }} Pending</span>
-</div>
-
-<h2>Monitored Sites</h2>
-
-<!-- Search bar -->
-<input type="text" id="searchBar" class="search-bar" placeholder="Search by site name, URL, or status..." />
-
-<table>
-    <thead>
-    <tr>
-        <th class="sortable" id="siteNameHeader">
-            Site Name
-            <span class="sort-arrow" id="siteNameArrow">↓</span>
-        </th>
-        <th class="sortable" id="urlHeader">
-            URL
-            <span class="sort-arrow" id="urlArrow">↓</span>
-        </th>
-        <th class="sortable" id="statusHeader">
-            Last Status
-            <span class="sort-arrow" id="statusArrow">↓</span>
-        </th>
-        <th class="sortable" id="checkTypeHeader">
-            Check Type
-            <span class="sort-arrow" id="checkTypeArrow">↓</span>
-        </th>
-        <th class="sortable" id="dateHeader">
-            Last Checked
-            <span class="sort-arrow" id="dateArrow">↓</span>
-        </th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="siteTableBody">
-    {% for item in sites %}
-        <tr>
-            <td>{{ item.siteName }}</td>
-            <td>{{ item.url }}</td>
-            <td>
-                {% if item.status == "up" %}
-                    <span class="status-up">🟢 {{ item.status }}</span>
-                {% elseif item.status == "down" %}
-                    <span class="status-down">🔴 {{ item.status }}</span>
-                {% else %}
-                    <span class="status-pending">⚪ {{ item.status }}</span>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="sortable" id="siteNameHeader">
+                    Site Name <i class="fas fa-sort-down fa-sm" id="siteNameArrow"></i>
+                </th>
+                {% if isGlobalAdmin %}
+                    <th class="sortable" id="companyHeader">
+                        Company <i class="fas fa-sort fa-sm" id="companyArrow"></i>
+                    </th>
                 {% endif %}
-            </td>
-            <td>{{ item.type }}</td>
-            <td>{{ item.checkedAt | date("Y-m-d H:i") }}</td>
-            <td>
-                <form method="post" action="/check-site">
-                    <input type="hidden" name="site_id" value="{{ item.siteId }}">
-                    <input type="hidden" name="type_id" value="{{ item.typeId }}">
-                    <button class="btn" type="submit">Check Now</button>
-                    {{ "check-site" | formToken | raw }}
-                </form>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+                <th class="sortable" id="statusHeader">
+                    Last Status <i class="fas fa-sort fa-sm" id="statusArrow"></i>
+                </th>
+                <th class="sortable" id="tagsHeader">
+                    Tags <i class="fas fa-sort fa-sm" id="tagsArrow"></i>
+                </th>
+                <th class="sortable" id="dateHeader">
+                    Last Checked <i class="fas fa-sort fa-sm" id="dateArrow"></i>
+                </th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="siteTableBody">
+            {% for item in sites %}
+                <tr>
+                    <td>{{ item.siteName }}</td>
+                    {% if isGlobalAdmin %}
+                        <td>
+                            {% if item.companyName %}
+                                <span class="badge badge-secondary">{{ item.companyName }}</span>
+                            {% else %}
+                                <span class="text-muted">Unknown</span>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    <td>
+                        {% if item.status == "up" %}
+                            <span class="status-up"><i class="fas fa-check-circle"></i> {{ item.status }}</span>
+                        {% elseif item.status == "down" %}
+                            <span class="status-down"><i class="fas fa-times-circle"></i> {{ item.status }}</span>
+                        {% else %}
+                            <span class="status-pending"><i class="fas fa-question-circle"></i> {{ item.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.tags %}
+                            {% set tagArray = item.tags|split(',') %}
+                            {% for tag in tagArray %}
+                                <span class="badge badge-info mr-1">{{ tag|trim }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">No tags</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.checkedAt | date("Y-m-d H:i") }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <form method="post" action="/check-site" class="d-inline">
+                                <input type="hidden" name="site_id" value="{{ item.siteId }}">
+                                <input type="hidden" name="type_id" value="{{ item.typeId }}">
+                                <button class="btn btn-sm btn-check" type="submit">
+                                    <i class="fas fa-sync-alt mr-1"></i> Check Now
+                                </button>
+                                {{ "check-site" | formToken | raw }}
+                            </form>
+                            <button class="btn btn-sm btn-primary ml-1"
+                                    onclick="showForm('edit','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}', 'form')">
+                                <i class="fas fa-edit mr-1"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger ml-1"
+                                    onclick="if (confirm('Delete this monitored site?')) { showForm('delete','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}', 'form');}">
+                                <i class="fas fa-trash-alt mr-1"></i> Delete
+                            </button>
+                            {% if item.status == "up" %}
+                                <button class="btn btn-sm btn-warning ml-1"
+                                        onclick="if (confirm('Disable this monitored site?')) { showForm('edit','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}&status=disabled', 'form');}">
+                                    <i class="fas fa-ban mr-1"></i> Disable
+                                </button>
+                            {% else %}
+                                <button class="btn btn-sm btn-success ml-1"
+                                        onclick="if (confirm('Enable this monitored site?')) { showForm('edit','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}&status=up', 'form');}">
+                                    <i class="fas fa-check-circle mr-1"></i> Enable
+                                </button>
+                            {% endif %}
+                            <button class="btn btn-sm btn-info ml-1"
+                                    onclick="window.location.href='/monitoringhistory/site/{{ item.siteId }}'">
+                                <i class="fas fa-history mr-1"></i> History
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="{{ isGlobalAdmin ? 5 : 4 }}" class="text-center py-4">
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle mr-2"></i> No monitored sites found. Add your first site to
+                            start monitoring.
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-<p style="margin-top: 15px;">
-    <a href="/create-site">+ Add New Monitored Site</a>
-</p>
+        <div class="text-right mt-4">
+            <a href="/create-site" class="btn btn-primary">
+                <i class="fas fa-plus-circle mr-1"></i> Add New Monitored Site
+            </a>
+        </div>
+    </div>
 
-<br>
-<a href="/logout">Logout</a>
+{% include 'common/footer.twig' with {
+    'includeHelperScripts': true,
+    'includeFilterScripts': true,
+    'includeModalForm': true,
+    'customScripts': '
+        <script>
+            // Tag filtering functionality
+            $(document).ready(function () {
+                // Determine column offsets based on whether global admin view is active
+                var isGlobalAdmin = ' ~ (isGlobalAdmin ? 'true' : 'false') ~ ';
+                var tagColumnIndex = isGlobalAdmin ? 3 : 2; // Tags column index
+                var statusColumnIndex = isGlobalAdmin ? 2 : 1; // Status column index
 
-<!-- Add the JavaScript link -->
-<script src="/src/public/js/filters.js"></script>
-</body>
-</html>
+                // Handle tag filtering
+                $("#tagFilter").on("change", function () {
+                    var selectedTag = $(this).val().toLowerCase();
+
+                    $("#siteTableBody tr").each(function () {
+                        var row = $(this);
+                        var tagsCell = row.find("td:nth-child(" + tagColumnIndex + ")"); // Tags column
+
+                        if (selectedTag === "") {
+                            // Show all rows when "All Tags" is selected
+                            row.show();
+                        } else {
+                            // Check if the row contains the selected tag
+                            var tagText = tagsCell.text().toLowerCase();
+                            var tagSpans = tagsCell.find("span.badge");
+                            var hasTag = false;
+
+                            tagSpans.each(function () {
+                                if ($(this).text().toLowerCase().trim() === selectedTag) {
+                                    hasTag = true;
+                                    return false; // Break the loop
+                                }
+                            });
+
+                            if (hasTag) {
+                                row.show();
+                            } else {
+                                row.hide();
+                            }
+                        }
+                    });
+                });
+
+                // Combine with existing search functionality
+                $("#searchBar").on("keyup", function () {
+                    var searchText = $(this).val().toLowerCase();
+                    var selectedTag = $("#tagFilter").val().toLowerCase();
+
+                    $("#siteTableBody tr").each(function () {
+                        var row = $(this);
+                        var siteNameCell = row.find("td:nth-child(1)");
+                        var statusCell = row.find("td:nth-child(" + statusColumnIndex + ")");
+                        var tagsCell = row.find("td:nth-child(" + tagColumnIndex + ")"); // Tags column
+
+                        var siteName = siteNameCell.text().toLowerCase();
+                        var status = statusCell.text().toLowerCase();
+
+                        var matchesSearch = siteName.includes(searchText) ||
+                            status.includes(searchText);
+
+                        var matchesTag = true;
+                        if (selectedTag !== "") {
+                            matchesTag = false;
+                            var tagSpans = tagsCell.find("span.badge");
+
+                            tagSpans.each(function () {
+                                if ($(this).text().toLowerCase().trim() === selectedTag) {
+                                    matchesTag = true;
+                                    return false; // Break the loop
+                                }
+                            });
+                        }
+
+                        if (matchesSearch && matchesTag) {
+                            row.show();
+                        } else {
+                            row.hide();
+                        }
+                    });
+                });
+            });
+        </script>
+    '
+} %}

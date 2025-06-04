@@ -1,101 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .dashboard-header {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .stats-card {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        .stats-card-up {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        .stats-card-down {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        .stats-card-pending {
+            background-color: #e2e3e5;
+            border-left: 5px solid #6c757d;
+        }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .stats-label {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .status-up {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .status-down {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #6c757d;
+            font-weight: bold;
+        }
+        .table-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            border-top: none;
+        }
+        .btn-check {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-check:hover {
+            background-color: #0069d9;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .navbar {
+            background-color: #343a40;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+        }
+        .nav-link:hover {
+            color: #fff !important;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-utilities.min.css">
-
-
-    <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.6/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css"
-          rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.6/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
-
+    <script src="/js/tina4helper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"
             integrity="sha256-xLhce0FUawd11QSwrvXSwST0oHhOolNoH9cUXAcsIAg=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js"
             integrity="sha256-NdDw7k+fJewgwI1XmH9NMR6OILvTX+3arqb/OgFicoM=" crossorigin="anonymous"></script>
-    <script src="/js/tina4helper.js"></script>
-    <link rel="stylesheet" href="/css/default.css">
-    <title>MonitoredSites</title>
 </head>
-
 <body>
-    <h3>MonitoredSites</h3>
-    <table id="monitoredSitesGrid" class="table table-striped table-bordered table-condensed" style="width:100%">
-        <thead>
-        <tr>
-                            <th>Site Id</th>
-                            <th>Company Id</th>
-                            <th>Type Id</th>
-                            <th>Url</th>
-                            <th>Site Name</th>
-                            <th>Status</th>
-                            <th>Created At</th>
-                        <th>Options</th>
-        </tr>
-        </thead>
-    </table>
-    <script>
-        var monitoredSitesGrid = null;
-        $(document).ready(function () {
-            monitoredSitesGrid = $('#monitoredSitesGrid').DataTable({
-                dom: '<"row"<"col-md-6"B><"col-md-4"f><"col-md-2"l>><rtip>',
-                ajax: {
-                        url: '/monitoredsites',
-                        data: function (d) {
-                            d.formToken = formToken;
-                        }
-                },
-                columns: [
-                                        {"data": "siteId"},
-                                        {"data": "companyId"},
-                                        {"data": "typeId"},
-                                        {"data": "url"},
-                                        {"data": "siteName"},
-                                        {"data": "status"},
-                                        {"data": "createdAt"},
-                                        {
-                        "data": null,
-                        "mRender": function (data, type, row) {
-                            let html = '';
-                            //loadForm parameters: api to retrieve modal form, target div id to load form to, row data, title of
-                            html += '<button class="btn btn-primary small-button" onclick="showForm(\'edit\',\'/monitoredsites/' + row.siteId + '?formToken={{ formToken ("/monitoredsites") }}\')">Edit</button>';
-                            html += ' <button class="btn btn-danger small-button" onclick="if (confirm(\'Delete  record ?\')) { showForm(\'delete\',\'/monitoredsites/' + row.siteId + '?formToken={{ formToken ("/monitoredsites") }}\');}">Del</button>';
-                            return html;
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/landing-page">
+            <i class="fas fa-chart-line mr-2"></i>Monitoring System
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/landing-page">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/create-site">Add Site</a>
+                </li>
+                {% if session.role == 'global_admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin Panel</a>
+                </li>
+                {% elseif session.role == 'company_admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/company-admin">Company Admin</a>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-circle mr-1"></i>{{ username }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        {% if not session.impersonating %}
+                            {% if not user.twofaEnabled %}
+                                <a class="dropdown-item" href="/setup-2fa">
+                                    <i class="fas fa-shield-alt mr-2"></i>Enable 2FA
+                                </a>
+                                <div class="dropdown-divider"></div>
+                            {% endif %}
+                        {% endif %}
+                        <a class="dropdown-item" href="/logout">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-                        },
-                        "sClass": "text-right",
-                        "searchable": false
+<div class="container">
+    <div class="dashboard-header">
+        <h1 class="display-4">Welcome, {{ username }}!</h1>
+        <p class="lead">Here's an overview of your monitored sites.</p>
+
+        {% if session.impersonating %}
+            <div class="alert alert-warning">
+                <i class="fas fa-user-secret mr-2"></i>
+                <strong>Admin Notice:</strong> You are currently viewing as {{ username }}. 
+                <a href="/admin/return" class="btn btn-sm btn-outline-dark ml-2">
+                    <i class="fas fa-sign-out-alt mr-1"></i>Return to Admin
+                </a>
+            </div>
+        {% endif %}
+
+        {% if request.notice %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle mr-2"></i>{{ request.notice }}
+            </div>
+        {% endif %}
+
+        {% if request.success %}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle mr-2"></i>{{ request.success }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="stats-card stats-card-up">
+                <div class="stats-number">{{ upCount }}</div>
+                <div class="stats-label">SITES UP</div>
+                <i class="fas fa-check-circle fa-2x text-success mt-2"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card stats-card-down">
+                <div class="stats-number">{{ downCount }}</div>
+                <div class="stats-label">SITES DOWN</div>
+                <i class="fas fa-exclamation-circle fa-2x text-danger mt-2"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card stats-card-pending">
+                <div class="stats-number">{{ pendingCount }}</div>
+                <div class="stats-label">PENDING</div>
+                <i class="fas fa-clock fa-2x text-secondary mt-2"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h2 class="mb-4">Monitored Sites</h2>
+
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input type="text" id="searchBar" class="form-control" placeholder="Search by site name or status...">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                    </div>
+                    <select id="tagFilter" class="form-control">
+                        <option value="">All Tags</option>
+                        {% set allTags = [] %}
+                        {% for site in sites %}
+                            {% if site.tags %}
+                                {% set siteTags = site.tags|split(',') %}
+                                {% for tag in siteTags %}
+                                    {% set trimmedTag = tag|trim %}
+                                    {% if trimmedTag not in allTags %}
+                                        {% set allTags = allTags|merge([trimmedTag]) %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        {% for tag in allTags|sort %}
+                            <option value="{{ tag }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+<table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="sortable" id="siteNameHeader">
+                        Site Name <i class="fas fa-sort-down fa-sm" id="siteNameArrow"></i>
+                    </th>
+                    {% if isGlobalAdmin %}
+                    <th class="sortable" id="companyHeader">
+                        Company <i class="fas fa-sort fa-sm" id="companyArrow"></i>
+                    </th>
+                    {% endif %}
+                    <th class="sortable" id="statusHeader">
+                        Last Status <i class="fas fa-sort fa-sm" id="statusArrow"></i>
+                    </th>
+                    <th class="sortable" id="tagsHeader">
+                        Tags <i class="fas fa-sort fa-sm" id="tagsArrow"></i>
+                    </th>
+                    <th class="sortable" id="dateHeader">
+                        Last Checked <i class="fas fa-sort fa-sm" id="dateArrow"></i>
+                    </th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="siteTableBody">
+                {% for item in sites %}
+                    <tr>
+                        <td>{{ item.siteName }}</td>
+                        {% if isGlobalAdmin %}
+                        <td>
+                            {% if item.companyName %}
+                                <span class="badge badge-secondary">{{ item.companyName }}</span>
+                            {% else %}
+                                <span class="text-muted">Unknown</span>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                        <td>
+                            {% if item.status == "up" %}
+                                <span class="status-up"><i class="fas fa-check-circle"></i> {{ item.status }}</span>
+                            {% elseif item.status == "down" %}
+                                <span class="status-down"><i class="fas fa-times-circle"></i> {{ item.status }}</span>
+                            {% else %}
+                                <span class="status-pending"><i class="fas fa-question-circle"></i> {{ item.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.tags %}
+                                {% set tagArray = item.tags|split(',') %}
+                                {% for tag in tagArray %}
+                                    <span class="badge badge-info mr-1">{{ tag|trim }}</span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">No tags</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.checkedAt | date("Y-m-d H:i") }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <form method="post" action="/check-site" class="d-inline">
+                                    <input type="hidden" name="site_id" value="{{ item.siteId }}">
+                                    <input type="hidden" name="type_id" value="{{ item.typeId }}">
+                                    <button class="btn btn-sm btn-check" type="submit">
+                                        <i class="fas fa-sync-alt mr-1"></i> Check Now
+                                    </button>
+                                    {{ "check-site" | formToken | raw }}
+                                </form>
+                                <button class="btn btn-sm btn-primary ml-1" onclick="showForm('edit','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}', 'form')">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger ml-1" onclick="if (confirm('Delete this monitored site?')) { showForm('delete','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}', 'form');}">
+                                    <i class="fas fa-trash-alt mr-1"></i> Delete
+                                </button>
+                                {% if item.status == "up" %}
+                                <button class="btn btn-sm btn-warning ml-1" onclick="if (confirm('Disable this monitored site?')) { showForm('edit','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}&status=disabled', 'form');}">
+                                    <i class="fas fa-ban mr-1"></i> Disable
+                                </button>
+                                {% else %}
+                                <button class="btn btn-sm btn-success ml-1" onclick="if (confirm('Enable this monitored site?')) { showForm('edit','/monitoredsites/{{ item.siteId }}?formToken={{ formToken ("/monitoredsites") }}&status=up', 'form');}">
+                                    <i class="fas fa-check-circle mr-1"></i> Enable
+                                </button>
+                                {% endif %}
+                                <button class="btn btn-sm btn-info ml-1" onclick="window.location.href='/monitoringhistory/site/{{ item.siteId }}'">
+                                    <i class="fas fa-history mr-1"></i> History
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="{{ isGlobalAdmin ? 5 : 4 }}" class="text-center py-4">
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle mr-2"></i> No monitored sites found. Add your first site to start monitoring.
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-right mt-4">
+            <a href="/create-site" class="btn btn-primary">
+                <i class="fas fa-plus-circle mr-1"></i> Add New Monitored Site
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Monitoring System &copy; {{ "now"|date("Y") }}</p>
+            <p><small>Providing real-time monitoring for your services</small></p>
+        </div>
+    </footer>
+</div>
+
+<!-- JavaScript Dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Tag filtering functionality
+    $(document).ready(function() {
+        // Determine column offsets based on whether global admin view is active
+        var isGlobalAdmin = {{ isGlobalAdmin ? 'true' : 'false' }};
+        var tagColumnIndex = isGlobalAdmin ? 3 : 2; // Tags column index
+        var statusColumnIndex = isGlobalAdmin ? 2 : 1; // Status column index
+
+        // Handle tag filtering
+        $('#tagFilter').on('change', function() {
+            var selectedTag = $(this).val().toLowerCase();
+
+            $('#siteTableBody tr').each(function() {
+                var row = $(this);
+                var tagsCell = row.find('td:nth-child(' + tagColumnIndex + ')'); // Tags column
+
+                if (selectedTag === '') {
+                    // Show all rows when "All Tags" is selected
+                    row.show();
+                } else {
+                    // Check if the row contains the selected tag
+                    var tagText = tagsCell.text().toLowerCase();
+                    var tagSpans = tagsCell.find('span.badge');
+                    var hasTag = false;
+
+                    tagSpans.each(function() {
+                        if ($(this).text().toLowerCase().trim() === selectedTag) {
+                            hasTag = true;
+                            return false; // Break the loop
+                        }
+                    });
+
+                    if (hasTag) {
+                        row.show();
+                    } else {
+                        row.hide();
                     }
-
-                ],
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                buttons: [
-                    {
-                        text: 'Create',
-                        action: function (e, dt, node, config) {
-                            let data = {};
-                            showForm('create', '/monitoredsites/form?formToken={{ formToken ("/monitoredsites") }}');
-                        }
-                    },
-                    'copy', 'excel', 'pdf', 'print'
-
-                ]
+                }
             });
         });
-    </script>
-    <div id="form"></div>
-    <div id="message"></div>
+
+        // Combine with existing search functionality
+        $('#searchBar').on('keyup', function() {
+            var searchText = $(this).val().toLowerCase();
+            var selectedTag = $('#tagFilter').val().toLowerCase();
+
+            $('#siteTableBody tr').each(function() {
+                var row = $(this);
+                var siteNameCell = row.find('td:nth-child(1)');
+                var statusCell = row.find('td:nth-child(' + statusColumnIndex + ')');
+                var tagsCell = row.find('td:nth-child(' + tagColumnIndex + ')'); // Tags column
+
+                var siteName = siteNameCell.text().toLowerCase();
+                var status = statusCell.text().toLowerCase();
+
+                var matchesSearch = siteName.includes(searchText) || 
+                                   status.includes(searchText);
+
+                var matchesTag = true;
+                if (selectedTag !== '') {
+                    matchesTag = false;
+                    var tagSpans = tagsCell.find('span.badge');
+
+                    tagSpans.each(function() {
+                        if ($(this).text().toLowerCase().trim() === selectedTag) {
+                            matchesTag = true;
+                            return false; // Break the loop
+                        }
+                    });
+                }
+
+                if (matchesSearch && matchesTag) {
+                    row.show();
+                } else {
+                    row.hide();
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Modal for forms -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModalLabel">Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="formModalBody">
+                <!-- Form content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add the missing divs for form handling -->
+<div id="form"></div>
+<div id="message"></div>
 </body>
 </html>

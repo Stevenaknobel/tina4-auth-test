@@ -4,7 +4,7 @@
 \Tina4\Get::add("/monitoringtypes/landing", function (\Tina4\Response $response){
     return $response (\Tina4\renderTemplate("/monitoringtypes/grid.twig"), HTTP_OK, TEXT_HTML);
 });
-        
+
 /**
  * CRUD Prototype MonitoringTypes Modify as needed
  * Creates  GET @ /path, /path/{id}, - fetch,form for whole or for single
@@ -16,7 +16,7 @@
        case "form":
        case "fetch":
             //Return back a form to be submitted to the create
-             
+
             if ($action == "form") {
                 $title = "Add MonitoringTypes";
                 $savePath =  TINA4_SUB_FOLDER . "/monitoringtypes";
@@ -33,11 +33,11 @@
             //Return a dataset to be consumed by the grid with a filter
             $where = "";
             if (!empty($filter["where"])) {
-                $where = "{$filter["where"]}";
+                $where = $filter["where"];
             }
-        
-            return   $monitoringTypes->select ("*", $filter["length"], $filter["start"])
-                ->where("{$where}")
+
+            return $monitoringTypes->select("*", $filter["length"], $filter["start"])
+                ->where($where)
                 ->orderBy($filter["orderBy"])
                 ->asResult();
         break;

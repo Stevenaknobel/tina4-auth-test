@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Two-Factor Authentication</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        .card {
+            max-width: 550px;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border: none;
+            border-radius: 10px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0 !important;
+            padding: 20px;
+        }
+        .card-body {
+            padding: 30px;
+        }
+        .form-control {
+            border-radius: 5px;
+            padding: 12px;
+            height: auto;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .alert {
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .setup-icon {
+            font-size: 48px;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .form-text {
+            color: #6c757d;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c757d;
+        }
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .qr-code img {
+            max-width: 200px;
+            height: auto;
+        }
+        .secret-key {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 0;
+            word-break: break-all;
+            font-size: 16px;
+            border: 1px dashed #ced4da;
+        }
+        .instructions {
+            margin-bottom: 20px;
+            background-color: #e9f7fe;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .instructions ol {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        .instructions li:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4><i class="fas fa-shield-alt mr-2"></i>Setup Two-Factor Authentication</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="setup-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        
+                        <h5 class="text-center mb-4">Enhance Your Account Security</h5>
+                        
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle mr-2"></i>{{ error }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="instructions">
+                            <p><strong>Follow these steps to set up two-factor authentication:</strong></p>
+                            <ol>
+                                <li>Download an authenticator app like Google Authenticator or Authy on your mobile device.</li>
+                                <li>Scan the QR code below with your authenticator app or enter the secret key manually.</li>
+                                <li>Enter the verification code shown in your authenticator app to complete the setup.</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="qr-code">
+                            <img src="{{ qr_code_url }}" alt="QR Code" class="img-fluid">
+                        </div>
+                        
+                        <div class="secret-key">
+                            <strong>Secret Key:</strong> {{ secret }}
+                        </div>
+                        
+                        <form method="post" action="/setup-2fa">
+                            <div class="form-group">
+                                <label for="code"><i class="fas fa-key mr-2"></i>Verification Code:</label>
+                                <input type="text" class="form-control" id="code" name="code" placeholder="Enter 6-digit code" required autofocus>
+                                <small class="form-text text-muted">Enter the 6-digit code from your authenticator app to verify and enable 2FA</small>
+                            </div>
+                            
+                            <input type="hidden" name="secret" value="{{ secret }}">
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check-circle mr-2"></i>Verify and Enable 2FA
+                            </button>
+                            {{ "setup-2fa" | formToken | raw }}
+                        </form>
+                        
+                        <a href="/landing-page" class="btn btn-secondary">
+                            <i class="fas fa-times-circle mr-2"></i>Skip for Now
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>Monitoring System &copy; {{ "now"|date("Y") }}</p>
+                    <p><small>Protect your account with two-factor authentication</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

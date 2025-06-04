@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Edit User</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if request.error %}
+                            <div class="alert alert-danger">{{ request.error }}</div>
+                        {% endif %}
+
+                        <form method="post" action="/company-admin/users/edit/{{ user.user_id }}">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required autofocus>
+                                <small class="form-text text-muted">Edit the username for this user.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                <small class="form-text text-muted">Edit the email address for this user.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                                <small class="form-text text-muted">Leave blank to keep the current password.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="role">Role:</label>
+                                <select class="form-control" id="role" name="role">
+                                    <option value="user" {% if user.role == 'user' %}selected{% endif %}>Regular User</option>
+                                    {% if session.role == 'global_admin' %}
+                                        <option value="company_admin" {% if user.role == 'company_admin' %}selected{% endif %}>Company Admin</option>
+                                    {% endif %}
+                                </select>
+                                <small class="form-text text-muted">Select the role for this user.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Update User</button>
+                                <a href="/company-admin" class="btn btn-secondary">Cancel</a>
+                            </div>
+
+                            {{ "edit-user" | formToken | raw }}
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>User Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">User ID:</dt>
+                            <dd class="col-sm-9">{{ user.user_id }}</dd>
+
+                            <dt class="col-sm-3">Company:</dt>
+                            <dd class="col-sm-9">{{ user.company_name }}</dd>
+
+                            <dt class="col-sm-3">Email:</dt>
+                            <dd class="col-sm-9">{{ user.email }}</dd>
+
+                            <dt class="col-sm-3">Created At:</dt>
+                            <dd class="col-sm-9">{{ user.created_at }}</dd>
+
+                            <dt class="col-sm-3">2FA Enabled:</dt>
+                            <dd class="col-sm-9">{{ user.twofa_enabled ? 'Yes' : 'No' }}</dd>
+                        </dl>
+
+                        {% if user.twofa_enabled %}
+                            <a href="/company-admin/users/disable-2fa/{{ user.user_id }}" class="btn btn-warning btn-sm">Disable 2FA</a>
+                        {% else %}
+                            <p class="text-muted">User can enable 2FA from their account settings.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-5 mb-3 text-center text-muted">
+            <p>Monitoring System Company Admin Panel &copy; {{ "now"|date("Y") }}</p>
+            <p><a href="/company-admin">Back to Company Admin Dashboard</a> | <a href="/logout">Logout</a></p>
+        </footer>
+    </div>
+</body>
+</html>

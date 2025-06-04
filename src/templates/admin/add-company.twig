@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Company</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Add New Company</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if request.error %}
+                            <div class="alert alert-danger">{{ request.error }}</div>
+                        {% endif %}
+                        
+                        <form method="post" action="/admin/companies/add">
+                            <div class="form-group">
+                                <label for="company_name">Company Name:</label>
+                                <input type="text" class="form-control" id="company_name" name="company_name" required autofocus>
+                                <small class="form-text text-muted">Enter the name of the company to add.</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Add Company</button>
+                                <a href="/admin" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            
+                            {{ "add-company" | formToken | raw }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="mt-5 mb-3 text-center text-muted">
+            <p>Monitoring System Admin Panel &copy; {{ "now"|date("Y") }}</p>
+            <p><a href="/admin">Back to Admin Dashboard</a> | <a href="/logout">Logout</a></p>
+        </footer>
+    </div>
+</body>
+</html>

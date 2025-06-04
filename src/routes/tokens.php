@@ -4,7 +4,7 @@
 \Tina4\Get::add("/tokens/landing", function (\Tina4\Response $response){
     return $response (\Tina4\renderTemplate("/tokens/grid.twig"), HTTP_OK, TEXT_HTML);
 });
-        
+
 /**
  * CRUD Prototype Tokens Modify as needed
  * Creates  GET @ /path, /path/{id}, - fetch,form for whole or for single
@@ -16,7 +16,7 @@
        case "form":
        case "fetch":
             //Return back a form to be submitted to the create
-             
+
             if ($action == "form") {
                 $title = "Add Tokens";
                 $savePath =  TINA4_SUB_FOLDER . "/tokens";
@@ -33,11 +33,11 @@
             //Return a dataset to be consumed by the grid with a filter
             $where = "";
             if (!empty($filter["where"])) {
-                $where = "{$filter["where"]}";
+                $where = $filter["where"];
             }
-        
-            return   $tokens->select ("*", $filter["length"], $filter["start"])
-                ->where("{$where}")
+
+            return $tokens->select("*", $filter["length"], $filter["start"])
+                ->where($where)
                 ->orderBy($filter["orderBy"])
                 ->asResult();
         break;

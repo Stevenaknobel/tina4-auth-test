@@ -2,22 +2,74 @@
 <html>
 <head>
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .card {
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            width: 100%;
+        }
+        .btn-secondary {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .alert {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-<h2>Login</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Login</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if (request.error) %}
+                            <div class="alert alert-danger">{{ request.error }}</div>
+                        {% endif %}
 
-{% if (request.error) %}
-    <div class="alert alert-danger"><strong>Invalid!</strong> Your username or password is incorrect!</div>
-{% endif %}
-<form id="loginForm" method="post" action="/login">
-    <label>Username:</label><br>
-    <input type="text" name="username"><br><br>
-    <label>Password:</label><br>
-    <input type="password" name="password"><br><br>
-    <button type="submit">Login</button>
-    {{  "login" | formToken | raw }}
-    <a href="/create-user"><button type="button">Create User</button></a>
+                        {% if (request.success) %}
+                            <div class="alert alert-success">{{ request.success }}</div>
+                        {% endif %}
 
-</form>
+                        <form id="loginForm" method="post" action="/login">
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username" required autofocus>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            {{ "login" | formToken | raw }}
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

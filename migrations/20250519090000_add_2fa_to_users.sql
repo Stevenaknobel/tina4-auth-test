@@ -1,0 +1,3 @@
+ALTER TABLE users
+ADD COLUMN twofa_secret VARCHAR(255) NULL,
+ADD COLUMN twofa_enabled TINYINT(1) DEFAULT 0;

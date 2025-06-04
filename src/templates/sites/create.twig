@@ -1,33 +1,128 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Monitored Site</title>
-</head>
-<body>
-<h2>Create a New Monitored Site</h2>
+{% include 'common/header.twig' with {
+    'pageTitle': 'Add Monitored Site',
+    'activePage': 'add-site'
+} %}
+    <div class="page-header">
+        <h1 class="display-4">Add Monitored Site</h1>
+        <p class="lead">Create a new site to monitor its status and availability.</p>
+    </div>
 
-{% if error %}
-    <p style="color:red;">{{ error }}</p>
-{% endif %}
+    <div class="form-container">
+        {% if error %}
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle mr-2"></i>{{ error }}
+            </div>
+        {% endif %}
 
-<form method="post" action="/create-site">
-    <label>Site Name:</label><br>
-    <input type="text" name="site_name" required><br><br>
+        <form method="post" action="/create-site">
+            <div class="form-group">
+                <label for="site_name"><i class="fas fa-tag mr-2"></i>Site Name:</label>
+                <input type="text" class="form-control" id="site_name" name="site_name" placeholder="Enter a descriptive name for the site" required>
+                <small class="form-text text-muted">Choose a name that helps you identify this site easily.</small>
+            </div>
 
-    <label>Site URL:</label><br>
-    <input type="url" name="url" required><br><br>
+            <div class="form-group">
+                <label for="url"><i class="fas fa-link mr-2"></i>Site URL:</label>
+                <input type="url" class="form-control" id="url" name="url" placeholder="https://example.com" required>
+                <small class="form-text text-muted">Enter the full URL including http:// or https://</small>
+            </div>
 
-    <label>Monitoring Type:</label><br>
-    <select name="type_id">
-        {% for type in types %}
-            <option value="{{ type.typeId }}">{{ type.typeName }}</option>
-        {% endfor %}
-    </select><br><br>
+            {% if session.role == 'global_admin' %}
+            <div class="form-group">
+                <label for="company_id"><i class="fas fa-building mr-2"></i>Company:</label>
+                <select class="form-control" id="company_id" name="company_id" required>
+                    <option value="">Select a company</option>
+                    {% for company in companies %}
+                        <option value="{{ company.companyId }}">{{ company.companyName }}</option>
+                    {% endfor %}
+                </select>
+                <small class="form-text text-muted">Select the company this site belongs to.</small>
+            </div>
+            {% endif %}
 
-    <button type="submit">Create Site</button>
-    {{ "create-site" | formToken | raw }}
-</form>
+            <div class="form-group">
+                <label for="type_id"><i class="fas fa-cog mr-2"></i>Monitoring Type:</label>
+                <select class="form-control" id="type_id" name="type_id" onchange="showTypeSpecificFields()">
+                    {% for type in types %}
+                        <option value="{{ type.typeId }}">{{ type.typeName }}</option>
+                    {% endfor %}
+                </select>
+                <small class="form-text text-muted">Select the type of monitoring to perform on this site.</small>
+            </div>
 
-<p><a href="/landing-page">Back to Dashboard</a></p>
-</body>
-</html>
+            <div class="form-group">
+                <label for="tags"><i class="fas fa-tags mr-2"></i>Tags:</label>
+                <input type="text" class="form-control" id="tags" name="tags" placeholder="e.g., production, api, critical">
+                <small class="form-text text-muted">Enter comma-separated tags for filtering and grouping (optional).</small>
+            </div>
+
+            <!-- Type-specific fields -->
+            <div id="api-fields" style="display: none;">
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">API Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="request_headers"><i class="fas fa-list mr-2"></i>Request Headers (JSON):</label>
+                            <textarea class="form-control" id="request_headers" name="request_headers" rows="3" placeholder='{"Content-Type": "application/json", "Authorization": "Bearer token"}'></textarea>
+                            <small class="form-text text-muted">Enter request headers in JSON format (optional).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="request_body"><i class="fas fa-code mr-2"></i>Request Body:</label>
+                            <textarea class="form-control" id="request_body" name="request_body" rows="3" placeholder='{"key": "value"}'></textarea>
+                            <small class="form-text text-muted">Enter request body for POST requests (optional).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expected_response"><i class="fas fa-check-circle mr-2"></i>Expected Response (contains):</label>
+                            <textarea class="form-control" id="expected_response" name="expected_response" rows="3" placeholder="Text that should be in the response"></textarea>
+                            <small class="form-text text-muted">Enter text that should be in the response (optional).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expected_status_code"><i class="fas fa-hashtag mr-2"></i>Expected Status Code:</label>
+                            <input type="number" class="form-control" id="expected_status_code" name="expected_status_code" placeholder="200" min="100" max="599">
+                            <small class="form-text text-muted">Enter the expected HTTP status code (optional, defaults to 200-399 range).</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus-circle mr-2"></i>Create Site
+                </button>
+                <a href="/landing-page" class="btn btn-secondary ml-2">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                </a>
+                {{ "create-site" | formToken | raw }}
+            </div>
+
+        </form>
+    </div>
+
+{% include 'common/footer.twig' with {
+    'customScripts': '
+        <script>
+            function showTypeSpecificFields() {
+                var typeId = document.getElementById("type_id").value;
+                var apiFields = document.getElementById("api-fields");
+
+                // Hide all type-specific fields first
+                apiFields.style.display = "none";
+
+                // Show fields based on type
+                if (typeId == "2" || typeId == "3" || typeId == "4") { // API GET, POST, or HTTP
+                    apiFields.style.display = "block";
+                }
+            }
+
+            // Call on page load to set initial state
+            document.addEventListener("DOMContentLoaded", function() {
+                showTypeSpecificFields();
+            });
+        </script>
+    '
+} %}

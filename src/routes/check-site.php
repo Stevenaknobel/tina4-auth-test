@@ -1,31 +1,34 @@
 <?php
 
+/**
+ * Check site monitoring status
+ * This route checks the status of a monitored site based on the site ID and type ID.
+ * It performs a ping or HTTP request to determine if the site is up or down,
+ * and updates the monitoring status in the database.
+ */
 \Tina4\Post::add("/check-site", function (\Tina4\Response $response, \Tina4\Request $request) {
+    \Tina4\Debug::message("Received form token: " . ($request->params["formToken"] ?? "none"));
+
     if (!isset($_SESSION["user_id"])) {
         return \Tina4\redirect("/login");
     }
 
-    global $DBA;
-
     $siteId = (int)($request->params["site_id"] ?? 0);
     $typeId = (int)($request->params["type_id"] ?? 0);
 
+    // Load the current user
     $user = (new Users())->load("user_id = ?", [$_SESSION["user_id"]]);
     $companyId = (int)$user->companyId;
 
-    // Validate the site
-    $siteResults = $DBA->fetch(
-        "SELECT * FROM monitored_sites WHERE site_id = {$siteId} AND company_id = {$companyId}",
-        1
-    )->asArray();
+    // Load the site using ORM
+    $site = (new MonitoredSites())->load("site_id = ? AND company_id = ?", [$siteId, $companyId]);
 
-    $site = $siteResults[0] ?? null;
-
-    if (!$site || !isset($site["url"])) {
+    // Check if site exists and belongs to the user's company
+    if (empty($site->siteId) || empty($site->url)) {
         return $response("Site not found or unauthorized", 403);
     }
 
-    $url = $site["url"];
+    $url = $site->url;
     $status = "unknown";
     $httpCode = 0;
 
@@ -35,7 +38,16 @@
     try {
         if ($typeId === 1) { // Ping
             $host = parse_url($url, PHP_URL_HOST);
-            $pingResult = exec("ping -c 1 -W 1 " . escapeshellarg($host), $output, $returnVar);
+            $host = preg_replace('#^https?://#', '', $host);
+
+            //$pingResult = exec("ping -n 1 -w 1000 " . escapeshellarg($host), $output, $returnVar);
+            $pingCommand = PHP_OS_FAMILY === 'Windows'
+                ? "ping -n 1 -w 1000 " . escapeshellarg($host)  // Windows format
+                : "ping -c 2 -W 1 " . escapeshellarg($host);    // Linux format
+
+            $pingResult = exec($pingCommand, $output, $returnVar);
+
+
             $status = ($returnVar === 0) ? "up" : "down";
         } else {
             $ch = curl_init($url);
@@ -62,53 +74,41 @@
 
     // Save the monitoring result
     $createdAt = date("Y-m-d H:i:s");
-    $monitoringData = [
-        $siteId,
-        $typeId,
-        $status,
-        $createdAt
-    ];
 
-    \Tina4\Debug::message("Insert values: " . json_encode($monitoringData));
     \Tina4\Debug::message("siteId: {$siteId}");
     \Tina4\Debug::message("typeId: {$typeId}");
     \Tina4\Debug::message("status: {$status}");
     \Tina4\Debug::message("timestamp: {$createdAt}");
-    \Tina4\Debug::message("Monitoring Data: " . var_export($monitoringData, true));
 
-// Check if there's already a monitoring entry for this site and type
-$existingMonitoring = $DBA->fetch(
-    "SELECT monitoring_id FROM monitoring WHERE site_id = {$siteId} AND type_id = {$typeId} LIMIT 1",
-    1
-)->asArray();
+    // Check if there's already a monitoring entry for this site and type
+    $existingMonitoring = (new Monitoring())->load("site_id = ? AND type_id = ?", [$siteId, $typeId]);
 
-if (!empty($existingMonitoring)) {
-    // Update existing record, if one is already created
-    $DBA->exec(
-        "UPDATE monitoring SET status = ?, created_at = ? WHERE site_id = ? AND type_id = ?",
-        $status, $createdAt, $siteId, $typeId
-    );
-} else {
-    // Insert new record only if one doesn't exist
-    $DBA->exec(
-        "INSERT INTO monitoring (site_id, type_id, status, created_at) 
-         VALUES (?, ?, ?, ?)",
-        $siteId, $typeId, $status, $createdAt
-    );
-}
+    if (!empty($existingMonitoring->monitoringId)) {
+        // Update existing record using ORM
+        $existingMonitoring->status = $status;
+        $existingMonitoring->createdAt = $createdAt;
+        $existingMonitoring->save();
+    } else {
+        // Insert new record using ORM
+        $monitoring = new Monitoring();
+        $monitoring->siteId = $siteId;
+        $monitoring->typeId = $typeId;
+        $monitoring->status = $status;
+        $monitoring->createdAt = $createdAt;
+        $monitoring->save();
+    }
 
-// Always insert into monitoring_history
-$DBA->exec(
-    "INSERT INTO monitoring_history (site_id, type_id, status, created_at)
-     VALUES (?, ?, ?, ?)",
-    $siteId, $typeId, $status, $createdAt
-);
+    // Always insert into monitoring_history using ORM
+    $history = new MonitoringHistory();
+    $history->siteId = $siteId;
+    $history->typeId = $typeId;
+    $history->status = $status;
+    $history->createdAt = $createdAt;
+    $history->save();
 
-// Update the monitored_sites table
-$DBA->exec(
-    "UPDATE monitored_sites SET status = ? WHERE site_id = ?",
-    $status, $siteId
-);
+    // Update the monitored_sites table using ORM
+    $site->status = $status;
+    $site->save();
 
     return \Tina4\redirect("/landing-page");
 });

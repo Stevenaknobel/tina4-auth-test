@@ -4,7 +4,28 @@
 \Tina4\Get::add("/monitoringhistory/landing", function (\Tina4\Response $response){
     return $response (\Tina4\renderTemplate("/monitoringhistory/grid.twig"), HTTP_OK, TEXT_HTML);
 });
-        
+
+\Tina4\Get::add("/monitoringhistory/site/{siteId}", function ($siteId, \Tina4\Response $response){
+    // Check if user is logged in
+    if (!isset($_SESSION["user_id"])) {
+        return \Tina4\redirect("/login");
+    }
+
+    // Get site details
+    $site = (new MonitoredSites())->load("site_id = ?", [$siteId]);
+    if (!$site) {
+        return \Tina4\redirect("/landing-page?error=Site not found");
+    }
+
+    // Get history for this site
+    $history = (new MonitoringHistory())->select("*")->where("site_id = ?", [$siteId])->orderBy("created_at DESC")->asArray();
+
+    return $response(\Tina4\renderTemplate("/monitoringhistory/site-history.twig", [
+        "site" => $site,
+        "history" => $history
+    ]), HTTP_OK, TEXT_HTML);
+});
+
 /**
  * CRUD Prototype MonitoringHistory Modify as needed
  * Creates  GET @ /path, /path/{id}, - fetch,form for whole or for single
@@ -16,7 +37,7 @@
        case "form":
        case "fetch":
             //Return back a form to be submitted to the create
-             
+
             if ($action == "form") {
                 $title = "Add MonitoringHistory";
                 $savePath =  TINA4_SUB_FOLDER . "/monitoringhistory";
@@ -33,11 +54,11 @@
             //Return a dataset to be consumed by the grid with a filter
             $where = "";
             if (!empty($filter["where"])) {
-                $where = "{$filter["where"]}";
+                $where = $filter["where"];
             }
-        
-            return   $monitoringHistory->select ("*", $filter["length"], $filter["start"])
-                ->where("{$where}")
+
+            return $monitoringHistory->select("*", $filter["length"], $filter["start"])
+                ->where($where)
                 ->orderBy($filter["orderBy"])
                 ->asResult();
         break;

@@ -1,97 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Admin Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.25/b-1.7.1/b-html5-1.7.1/b-print-1.7.1/r-2.2.9/sl-1.3.3/datatables.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-utilities.min.css">
-
-
-    <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.6/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.css"
-          rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-1.13.6/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.0/rr-1.4.1/sc-2.2.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"
-            integrity="sha256-xLhce0FUawd11QSwrvXSwST0oHhOolNoH9cUXAcsIAg=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js"
-            integrity="sha256-NdDw7k+fJewgwI1XmH9NMR6OILvTX+3arqb/OgFicoM=" crossorigin="anonymous"></script>
-    <script src="/js/tina4helper.js"></script>
-    <link rel="stylesheet" href="/css/default.css">
-    <title>Users</title>
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .alert {
+            margin-bottom: 20px;
+        }
+        .table th {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background-color: #343a40;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+        }
+        .nav-link:hover {
+            color: #fff !important;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
 </head>
-
 <body>
-    <h3>Users</h3>
-    <table id="usersGrid" class="table table-striped table-bordered table-condensed" style="width:100%">
-        <thead>
-        <tr>
-                            <th>User Id</th>
-                            <th>Company Id</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Created At</th>
-                        <th>Options</th>
-        </tr>
-        </thead>
-    </table>
-    <script>
-        var usersGrid = null;
-        $(document).ready(function () {
-            usersGrid = $('#usersGrid').DataTable({
-                dom: '<"row"<"col-md-6"B><"col-md-4"f><"col-md-2"l>><rtip>',
-                ajax: {
-                        url: '/users',
-                        data: function (d) {
-                            d.formToken = formToken;
-                        }
-                },
-                columns: [
-                                        {"data": "userId"},
-                                        {"data": "companyId"},
-                                        {"data": "username"},
-                                        {"data": "password"},
-                                        {"data": "createdAt"},
-                                        {
-                        "data": null,
-                        "mRender": function (data, type, row) {
-                            let html = '';
-                            //loadForm parameters: api to retrieve modal form, target div id to load form to, row data, title of
-                            html += '<button class="btn btn-primary small-button" onclick="showForm(\'edit\',\'/users/' + row.userId + '?formToken={{ formToken ("/users") }}\')">Edit</button>';
-                            html += ' <button class="btn btn-danger small-button" onclick="if (confirm(\'Delete  record ?\')) { showForm(\'delete\',\'/users/' + row.userId + '?formToken={{ formToken ("/users") }}\');}">Del</button>';
-                            return html;
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/admin">
+            <i class="fas fa-shield-alt mr-2"></i>Admin Panel
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">
+                        <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin/users">
+                        <i class="fas fa-users mr-1"></i>Users
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/monitoring-types">
+                        <i class="fas fa-list-alt mr-1"></i>Monitoring Types
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/landing-page">
+                        <i class="fas fa-chart-line mr-1"></i>Monitoring Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-                        },
-                        "sClass": "text-right",
-                        "searchable": false
-                    }
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Manage All Users</h4>
+                    <a href="/admin/users/create" class="btn btn-sm btn-light">
+                        <i class="fas fa-user-plus mr-1"></i>Create New User grid
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if request.success %}
+                        <div class="alert alert-success">{{ request.success }}</div>
+                    {% endif %}
 
-                ],
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                buttons: [
-                    {
-                        text: 'Create',
-                        action: function (e, dt, node, config) {
-                            let data = {};
-                            showForm('create', '/users/form?formToken={{ formToken ("/users") }}');
-                        }
-                    },
-                    'copy', 'excel', 'pdf', 'print'
+                    {% if request.error %}
+                        <div class="alert alert-danger">{{ request.error }}</div>
+                    {% endif %}
 
-                ]
-            });
+                    <p class="lead">View and manage all users across all companies.</p>
+
+                    <table id="usersGrid" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Company</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Created At</th>
+                                <th>2FA Enabled</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.user_id }}</td>
+                                    <td>{{ user.company_name }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.role }}</td>
+                                    <td>{{ user.created_at }}</td>
+                                    <td>{{ user.twofa_enabled ? 'Yes' : 'No' }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="/admin/login-as/{{ user.user_id }}" class="btn btn-sm btn-info">
+                                                <i class="fas fa-user-secret mr-1"></i>Login As
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Monitoring System Admin Panel &copy; {{ "now"|date("Y") }}</p>
+            <p><small>Global Administrator Access</small></p>
+        </div>
+    </footer>
+</div>
+
+<!-- JavaScript Dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.25/b-1.7.1/b-html5-1.7.1/b-print-1.7.1/r-2.2.9/sl-1.3.3/datatables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#usersGrid').DataTable({
+            responsive: true,
+            order: [[0, 'asc']],
+            pageLength: 25,
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
         });
-    </script>
-    <div id="form"></div>
-    <div id="message"></div>
+    });
+</script>
+
+<div id="form"></div>
+<div id="message"></div>
 </body>
 </html>
